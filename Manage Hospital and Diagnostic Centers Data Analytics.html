@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Heart Health Monitoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 60px; /* Increased space between heading and body */
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .chart-container {
+            width: 45%;
+            margin: 20px 0;
+        }
+        .chart-container canvas {
+            width: 100%;
+        }
+        .revenue-container {
+            width: 35%; /* Made the revenue chart smaller */
+            margin: 20px 0;
+        }
+        .table-container {
+            width: 40%; /* Made the table smaller in width */
+            margin: 20px auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+        th, td {
+            border: 1px solid #a6d3f8;
+            padding: 8px;
+        }
+        th {
+            background-color: #c3d7ee;
+            text-align: center;
+        }
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hospital Analytics Dashboard</h1>
+
+    <div class="container">
+        <div class="chart-container">
+            <canvas id="staffCountChart"></canvas>
+        </div>
+        <div class="revenue-container">
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="chart-container">
+            <canvas id="doctorCountChart"></canvas>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <h2>Payment Methods</h2>
+        <table>
+            <tr>
+                <th>Payment Type</th>
+            </tr>
+            <tr>
+                <td>Insurance</td>
+            </tr>
+            <tr>
+                <td>Cash</td>
+            </tr>
+            <tr>
+                <td>Credit Card</td>
+            </tr>
+            <tr>
+                <td>Others</td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data for Hospital Staff Count
+        const staffCountCtx = document.getElementById('staffCountChart').getContext('2d');
+        new Chart(staffCountCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Doctors', 'Nurses', 'Technicians', 'Administrative'],
+                datasets: [{
+                    label: 'Staff Count',
+                    data: [30, 100, 20, 15],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                }
+            }
+        });
+
+        // Data for Doctor Count
+        const doctorCountCtx = document.getElementById('doctorCountChart').getContext('2d');
+        new Chart(doctorCountCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Cardiologists', 'Surgeons', 'Physicians', 'Others'],
+                datasets: [{
+                    label: 'Doctor Count',
+                    data: [10, 15, 20, 5],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                }
+            }
+        });
+
+        // Data for Hospital Revenue
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Emergency services', 'Pharmacy and medication sales', 'Surgical and specialty services', 'Patient services', 'Government Funding'],
+                datasets: [{
+                    label: 'Hospital Revenue',
+                    data: [250000, 300000, 200000, 400000, 150000],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+</body>
+</html>

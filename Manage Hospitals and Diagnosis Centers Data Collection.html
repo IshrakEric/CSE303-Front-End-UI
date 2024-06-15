@@ -1,0 +1,113 @@
+<!-- <!DOCTYPE html> -- >
+<!-- saved from url=(0060)file:///C:/Users/User/Desktop/Hospital%20Preject/index.html? -->
+<!-- <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Heart Health Monitoring System</title>
+    <link rel="stylesheet" href="Manage Hospitals and Diagnosis Centers Data Collection.css">
+</head>
+<body>
+    <div class="container">
+    <h2>Hospital and Diagnosis Center Information</h2>
+        <form id="facilityForm">
+            <div class="form-group">
+                <label for="hospitalName">Hospital/Diagnostic Center Name</label>
+                <input type="text" class="form-control" id="hospitalName" placeholder="Enter Hospital/Diagnostic Center Name">
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location" placeholder="Enter Location">
+            </div>
+            <div class="form-group">
+                <label for="specialization">Specialization</label>
+                <input type="text" class="form-control" id="specialization" placeholder="Enter Specialization">
+            </div>
+            <div class="form-group">
+                <label for="reasonForVisit">Reason For Visit </label>
+                <input type="text" class="form-control" id="reasonForVisit" placeholder="Enter Reason for Visit">
+            </div>
+            <div class="form-group">
+                <label for="patientId">*Optional -- Patient ID (Patient Record)*</label>
+                <input type="text" class="form-control" id="patientId" placeholder="Enter Patient ID">
+            </div>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Hospital/Diagnostic Center Name</th>
+                <th>Location</th>
+                <th>Specialization</th>
+                <th>Reason for Visit</th>
+                <th>Patient ID</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('facilityForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const hospitalName = document.getElementById('hospitalName').value;
+            const location = document.getElementById('location').value;
+            const specialization = document.getElementById('specialization').value;
+            const reasonForVisit = document.getElementById('reasonForVisit').value;
+            const patientId = document.getElementById('patientId').value;
+            
+            // Create a new row
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${hospitalName}</td>
+                <td>${location}</td>
+                <td>${specialization}</td>
+                <td>${reasonForVisit}</td>
+                <td>${patientId}</td>
+            `;
+            
+            // Append the new row to the table
+            document.querySelector('#dataTable tbody').appendChild(newRow);
+            
+            // Clear the form
+            document.getElementById('facilityForm').reset();
+
+            // Send data to Data Analysis website via AJAX
+            const formData = {
+                hospitalName: hospitalName,
+                location: location,
+                specialization: specialization,
+                reasonForVisit: reasonForVisit,
+                patientId: patientId
+            };
+
+            // Example URL where Data Analysis website endpoint is located
+            const url = 'https://example.com/data-analysis-endpoint';
+
+            // AJAX request
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data sent to Data Analysis:', data);
+                // Handle response if needed
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+        });
+    </script>
+</body>
+</html>

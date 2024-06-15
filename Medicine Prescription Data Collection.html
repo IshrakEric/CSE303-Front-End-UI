@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Heart Health Monitoring System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: black;
+        }
+        h1 {
+            color: black;
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Collection</h1>
+    <form id="dataForm">
+        <label for="doctorName">Doctor Name:</label>
+        <input type="text" id="doctorName" name="doctorName" required>
+
+        <label for="doctorId">Doctor ID:</label>
+        <input type="text" id="doctorId" name="doctorId" required>
+
+        <label for="patientId">Patient ID:</label>
+        <input type="text" id="patientId" name="patientId" required>
+
+        <label for="patientName">Patient Name:</label>
+        <input type="text" id="patientName" name="patientName" required>
+
+        <label for="medicineName">Medicine Prescribed (Name):</label>
+        <input type="text" id="medicineName" name="medicineName" required>
+
+        <label for="medicineDosage">Medicine Prescribed (Dosage):</label>
+        <input type="text" id="medicineDosage" name="medicineDosage" required>
+
+        <label for="medicineSideEffect">Medicine Prescribed (Side-Effect):</label>
+        <input type="text" id="medicineSideEffect" name="medicineSideEffect" required>
+
+        <label for="medicineDuration">Medicine Prescribed (Duration):</label>
+        <input type="text" id="medicineDuration" name="medicineDuration" required>
+
+        <button type="submit">Submit</button>
+    </form>
+    
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Doctor ID</th>
+                <th>Patient ID</th>
+                <th>Patient Name</th>
+                <th>Medicine Prescribed (Name)</th>
+                <th>Medicine Prescribed (Dosage)</th>
+                <th>Medicine Prescribed (Side-Effect)</th>
+                <th>Medicine Prescribed (Duration)</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const doctorName = document.getElementById('doctorName').value;
+            const doctorId = document.getElementById('doctorId').value;
+            const patientId = document.getElementById('patientId').value;
+            const patientName = document.getElementById('patientName').value;
+            const medicineName = document.getElementById('medicineName').value;
+            const medicineDosage = document.getElementById('medicineDosage').value;
+            const medicineSideEffect = document.getElementById('medicineSideEffect').value;
+            const medicineDuration = document.getElementById('medicineDuration').value;
+            
+            // Create a new row
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${doctorName}</td>
+                <td>${doctorId}</td>
+                <td>${patientId}</td>
+                <td>${patientName}</td>
+                <td>${medicineName}</td>
+                <td>${medicineDosage}</td>
+                <td>${medicineSideEffect}</td>
+                <td>${medicineDuration}</td>
+            `;
+            
+            // Append the new row to the table
+            document.querySelector('#dataTable tbody').appendChild(newRow);
+            
+            // Clear the form
+            document.getElementById('dataForm').reset();
+
+            // Send data to Data Analysis website via AJAX
+            const formData = {
+                doctorName: doctorName,
+                doctorId: doctorId,
+                patientId: patientId,
+                patientName: patientName,
+                medicineName: medicineName,
+                medicineDosage: medicineDosage,
+                medicineSideEffect: medicineSideEffect,
+                medicineDuration: medicineDuration
+            };
+
+            // Example URL where Data Analysis website endpoint is located
+            const url = 'https://example.com/data-analysis-endpoint';
+
+            // AJAX request
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data sent to Data Analysis:', data);
+                // Handle response if needed
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+            });
+        });
+    </script>
+</body>
+</html>

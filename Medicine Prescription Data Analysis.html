@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Heart Health Monitoring System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js"></link>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .chart-container {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Analytics Dashboard</h1>
+    <div class="container">
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Doctor Name</th>
+                    <th>Doctor ID</th>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Medicine Prescribed (Name)</th>
+                    <th>Medicine Prescribed (Dosage)</th>
+                    <th>Medicine Prescribed (Side-Effect)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <div class="chart-container">
+            <canvas id="medicineChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sample data (you can replace this with real data or fetch from a backend)
+        const data = [
+            { doctorName: 'Dr. Smith', doctorId: 'D001', patientId: 'P001', patientName: 'John Doe', medicineName: 'Aspirin', medicineDosage: '10mg', medicineSideEffect: 'None' },
+            { doctorName: 'Dr. Johnson', doctorId: 'D002', patientId: 'P002', patientName: 'Jane Smith', medicineName: 'Paracetamol', medicineDosage: '5mg', medicineSideEffect: 'Dizziness' },
+            { doctorName: 'Dr. Brown', doctorId: 'D003', patientId: 'P003', patientName: 'Michael Johnson', medicineName: 'Ibuprofen', medicineDosage: '15mg', medicineSideEffect: 'Nausea' },
+            { doctorName: 'Dr. Wilson', doctorId: 'D004', patientId: 'P004', patientName: 'Sarah Lee', medicineName: 'Ciprofloxacin', medicineDosage: '20mg', medicineSideEffect: 'Headache' },
+            { doctorName: 'Dr. Garcia', doctorId: 'D005', patientId: 'P005', patientName: 'David Brown', medicineName: 'Amoxicillin', medicineDosage: '12mg', medicineSideEffect: 'Rash' }
+        ];
+
+        // Populate table with initial data
+        const tableBody = document.querySelector('#dataTable tbody');
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.doctorName}</td>
+                <td>${item.doctorId}</td>
+                <td>${item.patientId}</td>
+                <td>${item.patientName}</td>
+                <td>${item.medicineName}</td>
+                <td>${item.medicineDosage}</td>
+                <td>${item.medicineSideEffect}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Chart.js configuration
+        const ctx = document.getElementById('medicineChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(item => item.medicineName),
+                datasets: [{
+                    label: 'Dosage (mg)',
+                    data: data.map(item => parseFloat(item.medicineDosage)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>
