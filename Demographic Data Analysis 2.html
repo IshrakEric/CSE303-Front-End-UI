@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Demographic Data Analysis</title>
+    <link rel="stylesheet" href="Demographic Data Analysis 2.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Patient Demographic Data Form</h1>
+        <form id="patient-form">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="chronicConditions">Chronic Conditions:</label>
+                <input type="text" id="chronicConditions" name="chronicConditions" required>
+            </div>
+            <div class="form-group">
+                <label for="allergies">Allergies:</label>
+                <input type="text" id="allergies" name="allergies" required>
+            </div>
+            <div class="form-group">
+                <label for="pastSurgeries">Past Surgeries:</label>
+                <input type="text" id="pastSurgeries" name="pastSurgeries" required>
+            </div>
+            <div class="form-group">
+                <label for="visitDate">Visit Date:</label>
+                <input type="date" id="visitDate" name="visitDate" required>
+            </div>
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis:</label>
+                <input type="text" id="diagnosis" name="diagnosis" required>
+            </div>
+            <div class="form-group">
+                <label for="treatments">Treatments:</label>
+                <input type="text" id="treatments" name="treatments" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor">Doctor:</label>
+                <input type="text" id="doctor" name="doctor" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <h1>Patient Data Table</h1>
+        <table id="patient-table">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Chronic Conditions</th>
+                    <th>Allergies</th>
+                    <th>Past Surgeries</th>
+                    <th>Visit Date</th>
+                    <th>Diagnosis</th>
+                    <th>Treatments</th>
+                    <th>Doctor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be appended here by JavaScript -->
+            </tbody>
+        </table>
+
+        <div class="charts">
+            <div class="chart-container">
+                <canvas id="genderChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="ageChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const patientForm = document.getElementById('patient-form');
+        const patientTableBody = document.querySelector('#patient-table tbody');
+
+        const genderData = { male: 0, female: 0, other: 0 };
+        const ageData = [];
+
+        function calculateAge(dob) {
+            const birthDate = new Date(dob);
+            const ageDiffMs = Date.now() - birthDate.getTime();
+            const ageDate = new Date(ageDiffMs);
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
+
+        patientForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const dob = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const chronicConditions = document.getElementById('chronicConditions').value;
+            const allergies = document.getElementById('allergies').value;
+            const pastSurgeries = document.getElementById('pastSurgeries').value;
+            const visitDate = document.getElementById('visitDate').value;
+            const diagnosis = document.getElementById('diagnosis').value;
+            const treatments = document.getElementById('treatments').value;
+            const doctor = document.getElementById('doctor').value;
+
+            const newRow = document.createElement('tr');
+
+            newRow.innerHTML = `
+                <td>${fullName}</td>
+                <td>${dob}</td>
+                <td>${gender}</td>
+                <td>${address}</td>
+                <td>${phone}</td>
+                <td>${email}</td>
+                <td>${chronicConditions}</td>
+                <td>${allergies}</td>
+                <td>${pastSurgeries}</td>
+                <td>${visitDate}</td>
+                <td>${diagnosis}</td>
+                <td>${treatments}</td>
+                <td>${doctor}</td>
+            `;
+
+            patientTableBody.appendChild(newRow);
+
+            // Update gender chart data
+            genderData[gender]++;
+            // Update age chart data
+            const age = calculateAge(dob);
+            ageData.push(age);
+
+            updateCharts();
+            patientForm.reset();
+        });
+
+        function updateCharts() {
+            // Update Gender Chart
+            const genderChartCtx = document.getElementById('genderChart').getContext('2d');
+            new Chart(genderChartCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Male', 'Female', 'Other'],
+                    datasets: [{
+                        data: [genderData.male, genderData.female, genderData.other],
+                        backgroundColor: ['#007bff', '#dc3545', '#ffc107']
+                    }]
+                }
+            });
+
+            // Update Age Chart
+            const ageChartCtx = document.getElementById('ageChart').getContext('2d');
+            const ageCounts = {};
+            ageData.forEach(age => {
+                ageCounts[age] = (ageCounts[age] || 0) + 1;
+            });
+
+            new Chart(ageChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(ageCounts),
+                    datasets: [{
+                        label: 'Age Distribution',
+                        data: Object.values(ageCounts),
+                        backgroundColor: '#007bff'
+                    }]
+                }
+            });
+        }
+    </script>
+</body>
+</html>
